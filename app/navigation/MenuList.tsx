@@ -1,8 +1,7 @@
-import type { StackNavigationProp } from '@react-navigation/stack';
 import * as React from 'react';
 import { FlatList } from 'react-native';
-import { Avatar, Badge, Card, useTheme } from 'react-native-paper';
 
+import MenuItem from '../components/MenuItem';
 import AccountsScreen from '../screens/AccountsScreen';
 import CreditCardsScreen from '../screens/CreditCardsScreen';
 import ExpensesScreen from '../screens/ExpensesScreen';
@@ -18,7 +17,7 @@ import SalesScreen from '../screens/SalesScreen';
 import ServicesScreen from '../screens/ServicesScreen';
 import TaxInvoicesScreen from '../screens/TaxInvoicesScreen';
 
-export const items: Record<string, React.Component<any> & { title: string; icon: string }> = {
+export const items: Record<string, React.VFC<any> & { title: string; icon: string }> = {
   notifications: NotificationsScreen,
   indicators: IndicatorsScreen,
   sales: SalesScreen,
@@ -35,32 +34,16 @@ export const items: Record<string, React.Component<any> & { title: string; icon:
   help: HelpScreen,
 };
 
-type Props = {
-  navigation: StackNavigationProp<{ [key: string]: undefined }>;
-};
-
-type Item = {
+export type Item = {
   id: string;
   data: typeof items[string];
 };
 
 const data = Object.keys(items).map((id): Item => ({ id, data: items[id] }));
 
-export default function MenuList({ navigation }: Props) {
-  const renderItem = ({ item }: { item: Item }) => (
-    <Card style={{ margin: 4 }} onPress={() => navigation.navigate(item.id)}>
-      <Card.Title
-        title={item.data.title}
-        left={(props) => <Avatar.Icon {...props} icon={item.data.icon} />}
-        // right={(props) => <Badge visible={true} {...props}></Badge>}
-        rightStyle={{ marginHorizontal: 16 }}
-      />
-    </Card>
-  );
-
+export default function MenuList() {
+  const renderItem = ({ item }: { item: Item }) => <MenuItem item={item} />;
   const keyExtractor = (item: { id: string }) => item.id;
-
-  const { colors } = useTheme();
 
   return (
     <FlatList
