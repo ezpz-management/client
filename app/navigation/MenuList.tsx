@@ -34,10 +34,10 @@ export const items: Record<string, React.VFC<any> & { title: string; icon: strin
   help: HelpScreen,
 };
 
-export type Item = {
+export interface Item {
   id: string;
   data: typeof items[string];
-};
+}
 
 const data = Object.keys(items).map((id): Item => ({ id, data: items[id] }));
 
